@@ -20,18 +20,21 @@ function App() {
 
     try {
       const response = await fetch(
-        `https://api.weatherapi.com/v1/current.json?key=9f8d1199d39848dc942101745242807&q=${city}`
+        `https://api.weatherapi.com/v1/current.json?key=Your_API_KEY&q=${city}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch weather data");
       }
       const data = await response.json();
-      setWeatherData(data);
+
+      setTimeout(() => {
+        setWeatherData(data);
+        setLoading(false);
+      }, 500);
     } catch (error) {
+      setLoading(false);
       setError("Failed to fetch weather data");
       alert("Failed to fetch weather data");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -54,11 +57,7 @@ function App() {
         />
         <button onClick={fetchWeatherData}>Search</button>{" "}
       </div>
-
-      {loading && <p>Loading data…</p>}
-
-      {error && <p>{error}</p>}
-
+      {loading && <p>Loading data...</p>} {error && <p>{error}</p>}
       {weatherData && <WeatherCard data={weatherData} />}
     </div>
   );
